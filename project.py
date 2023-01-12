@@ -1,4 +1,6 @@
+"""COMP-410 Spring 2023 Class Project"""
 def show_aggie_pride():
+    """Show Aggie Pride"""
     return 'Aggie Pride - Worldwide'
 
 
