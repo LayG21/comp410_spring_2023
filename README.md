@@ -9,3 +9,5 @@ COMP-410 Spring 2023 Semester
 * Issues must have a valid [milestone](https://github.com/NCATComp410/comp410_spring_2023/milestones) (Sprint1, Sprint2, Sprint3)
 * Issues must have a team name [label](https://github.com/NCATComp410/comp410_spring_2023/labels)
 * An issue should be assigned to all team members that worked on the issue
+## Team Discussions
+* To access the [team discussions](https://github.com/orgs/NCATComp410/teams/comp410spring2023class/discussions) you must accept the email invitation to join the [team](https://github.com/orgs/NCATComp410/teams/comp410spring2023class)
