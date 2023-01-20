@@ -1,6 +1,6 @@
 """Unit-test cases for class project"""
 import unittest
-from project import show_aggie_pride, reverse_list
+from project import show_aggie_pride, reverse_list, get_area_codes
 
 
 class ProjectTestCase(unittest.TestCase):
@@ -21,6 +21,16 @@ class ProjectTestCase(unittest.TestCase):
         # try letters
         reverse = ['e', 'd', 'c', 'b', 'a']
         self.assertListEqual(reverse, reverse_list(['a', 'b', 'c', 'd', 'e']))
+
+    def test_get_area_codes(self):
+        """Test to make sure we can get area codes OK"""
+        ac_dict = get_area_codes()
+
+        # Try a few known area codes
+        self.assertEqual(ac_dict['516'], 'NY')
+        self.assertEqual(ac_dict['919'], 'NC')
+        self.assertEqual(ac_dict['212'], 'NY')
+        self.assertEqual(ac_dict['970'], 'CO')
 
 
 if __name__ == '__main__':
