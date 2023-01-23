@@ -42,6 +42,10 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert_text_numbers_to_integers('zero, one, two ,three , four,five,six,seven,eight,nine,ten')
 
+        # Empty list
+        with self.assertRaises(ValueError):
+            convert_text_numbers_to_integers(')')
+
 
 if __name__ == '__main__':
     unittest.main()
