@@ -14,7 +14,7 @@ def reverse_list(input_list) -> list:
 def get_area_codes() -> dict:
     """Returns a dict of known area codes"""
     # Get the area code information from NANPA
-    url = requests.get('https://nationalnanpa.com/nanp1/npa_report.csv')
+    url = requests.get('https://nationalnanpa.com/nanp1/npa_report.csv', timeout=10)
     area_codes = {}
     for line in url.text.split('\n'):
         # skip the header lines
