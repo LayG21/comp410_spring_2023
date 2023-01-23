@@ -1,6 +1,6 @@
 """Unit-test cases for class project"""
 import unittest
-from project import show_aggie_pride, reverse_list, get_area_codes
+from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers
 
 
 class ProjectTestCase(unittest.TestCase):
@@ -32,6 +32,17 @@ class ProjectTestCase(unittest.TestCase):
         self.assertEqual(ac_dict['212'], 'NY')
         self.assertEqual(ac_dict['970'], 'CO')
 
+    def test_convert_text_numbers_to_integers(self):
+        """Test to make sure we can convert text numbers to integers"""
+        text = 'zero, one, two ,three , four,five,six,seven,eight,nine'
+        results = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.assertListEqual(results, convert_text_numbers_to_integers(text))
+
+        # test an ivnalid input
+        with self.assertRaises(ValueError):
+            convert_text_numbers_to_integers('zero, one, two ,three , four,five,six,seven,eight,nine,ten')
+
 
 if __name__ == '__main__':
     unittest.main()
+
