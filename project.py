@@ -37,6 +37,22 @@ def convert_text_numbers_to_integers(text_numbers:str) -> list:
     return numbers
 
 
+def convert_text_to_digits_example(text: str) -> list:
+    """Converts a comma seperated list of text digits to integers"""
+    text_digits = {'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
+                   'six': 6, 'seven': 7, 'eight': 8, 'nine': 9}
+
+    results = []
+    for digit in text.split(','):
+        digit = digit.strip()
+        if digit in text_digits:
+            results.append(text_digits[digit])
+        else:
+            raise ValueError('Invalid digit: ' + digit)
+
+    return results
+
+
 def show_aggie_pride():
     """Show Aggie Pride"""
     return 'Aggie Pride - Worldwide'
