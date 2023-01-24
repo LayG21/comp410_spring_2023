@@ -1,6 +1,6 @@
 """Unit-test cases for class project"""
 import unittest
-from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers
+from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example
 
 
 class ProjectTestCase(unittest.TestCase):
@@ -45,6 +45,15 @@ class ProjectTestCase(unittest.TestCase):
         # Empty list
         with self.assertRaises(ValueError):
             convert_text_numbers_to_integers(')')
+
+    def test_convert_text_to_digits_example(self):
+        """Test to make sure convert_text_to_digits_example works as expected"""
+        text = 'zero, one, two ,three , four,five,six,seven,eight,nine'
+        results = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.assertListEqual(results, convert_text_to_digits_example(text))
+
+        with self.assertRaises(ValueError):
+            convert_text_to_digits_example('ten')
 
 
 if __name__ == '__main__':
