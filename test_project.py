@@ -55,6 +55,9 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert_text_to_digits_example('ten')
 
+        with self.assertRaises(ValueError):
+            convert_text_to_digits_example('')
+
 
 if __name__ == '__main__':
     unittest.main()
