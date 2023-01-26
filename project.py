@@ -53,6 +53,20 @@ def convert_text_to_digits_example(text: str) -> list:
     return results
 
 
+def email_domain_and_user_count(string_of_emails):
+    dict_of_emails_and_users_count = {}
+    if not string_of_emails:
+        return dict_of_emails_and_users_count
+    list_of_emails = string_of_emails.split(',')
+    for email in list_of_emails:
+        email_domain = email.split('@')[1]
+        if email_domain not in dict_of_emails_and_users_count:
+            dict_of_emails_and_users_count[email_domain] = 1
+        else:
+            dict_of_emails_and_users_count[email_domain] += 1
+    
+    return dict_of_emails_and_users_count
+
 def show_aggie_pride():
     """Show Aggie Pride"""
     return 'Aggie Pride - Worldwide'
