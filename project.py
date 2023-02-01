@@ -75,6 +75,10 @@ def get_area_codes() -> dict:
         area_codes[ac_info[0]] = ac_info[8]
     return area_codes
 
+def area_code_lookup(phone_nums:str) -> dict:
+    """Returns a dict of area codes and corresponding state"""
+    phone_list = sorted(phone_nums.replace(" ", "").split(","))
+    return phone_list
 
 if __name__ == '__main__':
     print(show_aggie_pride())
