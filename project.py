@@ -1,5 +1,6 @@
 """COMP-410 Spring 2023 Class Project"""
 import requests
+import re
 
 def add_two_numbers(num1, num2):
     """Adds two numbers together"""
@@ -80,7 +81,11 @@ def area_code_lookup(phone_nums:str) -> dict:
     phone_list = sorted(phone_nums.replace(" ", "").split(","))
     output_dict = {}
     for num in phone_list:
-        output_dict[num[0:3]] = get_area_codes().get(num[0:3])
+        area_code = num[0:3]
+        if ~bool(re.match(num, '/\d{3}-\d{3}-\d{4})/')) & (int(area_code) > 200):
+            output_dict[int(area_code)] = get_area_codes().get(area_code)
+        else:
+            raise ValueError('Invalid phone number: ' + num)
     return output_dict
 
 if __name__ == '__main__':
