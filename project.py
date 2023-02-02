@@ -78,3 +78,43 @@ def get_area_codes() -> dict:
 
 if __name__ == '__main__':
     print(show_aggie_pride())
+
+
+
+"""
+Create a function which inputs a comma separated list of states and returns a dict of states and 
+    total number of times each state was seen.
+
+- The keys should be the state abbreviations, the values should be the total count.
+- Sort the dictionary alphabetically by state.
+- Be sure to handle variable spacing around the comma.
+- In the case of an invalid or misspelled state, raise a ValueError exception.
+
+For example:
+
+Input text
+text = 'Alaska,North Carolina,  New York , New Jersey, North Carolina, Washington'
+
+Expected results
+{'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1}
+
+Step 1: Prepping the input (Kamaria P.)
+Input is a string
+Input needs to be broken up/separated to commas (also worry about spacing; some sort of trimming)
+Need a dict of all written out states
+A dictionary for each state name and mapping its abbreviation to it State_to_abb_dict
+A dictionary for state frequencies (how many times it appears in input) state_freq_dict
+
+Step 2: Iterate through input and check for valid state names (Jalen L.)
+For loop to iterate through each state in "text" variable for state in states
+    - check if state is in state_to_abb_dict
+        -if it is: (meaning its a valid state name)
+            check if state abbreviation has been added to frequency dictionary
+                - if state_to_abb_dict[state] in state_freq_dict:
+                    state_freq_dict[state_to_abb_dict[state]] += 1
+                - else
+                    state_freq_dict[state_to_abb_dict[state]] = 1
+        -if not:
+            - raise ValueError exception
+return sorted(state_freq_dict)
+"""

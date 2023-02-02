@@ -58,6 +58,21 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert_text_to_digits_example('')
 
+"""
+Import 
+
+Julious H.
+Test cases:
+- Misspelled state(s) -> Value Error
+- Empty list -> ValueError?
+
+Jalen S.
+- All correct states will produced a abbreviation frequency list
+    - Input text
+        text = 'Alaska,North Carolina,  New York , New Jersey, North Carolina, Washington'
+        Expected results {'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1}
+"""
+
 
 if __name__ == '__main__':
     unittest.main()
