@@ -99,8 +99,9 @@ Expected results
 {'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1}
 
 Step 1: Prepping the input (Kamaria P.)
-Input is a string
+Input is a string named as input_states as function parameter
 Input needs to be broken up/separated to commas (also worry about spacing; some sort of trimming)
+    - Input needs to be turned into a list named states
 Need a dict of all written out states
 A dictionary for each state name and mapping its abbreviation to it State_to_abb_dict
 A dictionary for state frequencies (how many times it appears in input) state_freq_dict
@@ -118,3 +119,23 @@ For loop to iterate through each state in "text" variable for state in states
             - raise ValueError exception
 return sorted(state_freq_dict)
 """
+
+def get_state_abbrev_freq(text_states: str) -> dict:
+    #if input was empty <--- not too sure if this will work but test is needed
+    if input == "" or states == []:
+        raise ValueError('Empty List')
+
+    #non empty input
+    for state in states:
+        #check for valid state names
+        if state in state_to_abb_dict:
+            #check if state has already been added to abbreviation frequency dict
+            if state_to_abb_dict[state] in state_freq_dict:
+                state_freq_dict[state_to_abb_dict[state]] += 1
+            #if not, add it
+            else:
+                state_freq_dict[state_to_abb_dict[state]] = 1
+        #If invalid state name, raise ValueError
+        else:
+            raise ValueError('Invalid State: ' + state) 
+    return sorted(state_freq_dict)
