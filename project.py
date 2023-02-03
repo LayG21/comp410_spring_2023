@@ -99,12 +99,13 @@ Expected results
 {'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1}
 
 Step 1: Prepping the input (Kamaria P.)
-Input is a string named as input_states as function parameter
+Input is a string named as input_states as function parameter (DONE)
 Input needs to be broken up/separated to commas (also worry about spacing; some sort of trimming)
     - Input needs to be turned into a list named states
-Need a dict of all written out states
-A dictionary for each state name and mapping its abbreviation to it State_to_abb_dict
+Need a dict of all written out states (DONE)
+A dictionary for each state name and mapping its abbreviation to it State_to_abb_dict (DONE)
 A dictionary for state frequencies (how many times it appears in input) state_freq_dict
+
 
 Step 2: Iterate through input and check for valid state names (Jalen L.)
 For loop to iterate through each state in "text" variable for state in states
@@ -119,6 +120,81 @@ For loop to iterate through each state in "text" variable for state in states
             - raise ValueError exception
 return sorted(state_freq_dict)
 """
+#Dictionary of States to Abbrev.
+state_to_abb_dict = {
+  "Alabama": "AL",
+    "Alaska": "AK",
+    "Arizona": "AZ",
+    "Arkansas": "AR",
+    "California": "CA",
+    "Colorado": "CO",
+    "Connecticut": "CT",
+    "Delaware": "DE",
+    "Florida": "FL",
+    "Georgia": "GA",
+    "Hawaii": "HI",
+    "Idaho": "ID",
+    "Illinois": "IL",
+    "Indiana": "IN",
+    "Iowa": "IA",
+    "Kansas": "KS",
+    "Kentucky": "KY",
+    "Louisiana": "LA",
+    "Maine": "ME",
+    "Maryland": "MD",
+    "Massachusetts": "MA",
+    "Michigan": "MI",
+    "Minnesota": "MN",
+    "Mississippi": "MS",
+    "Missouri": "MO",
+    "Montana": "MT",
+    "Nebraska": "NE",
+    "Nevada": "NV",
+    "New Hampshire": "NH",
+    "New Jersey": "NJ",
+    "New Mexico": "NM",
+    "New York": "NY",
+    "North Carolina": "NC",
+    "North Dakota": "ND",
+    "Ohio": "OH",
+    "Oklahoma": "OK",
+    "Oregon": "OR",
+    "Pennsylvania": "PA",
+    "Rhode Island": "RI",
+    "South Carolina": "SC",
+    "South Dakota": "SD",
+    "Tennessee": "TN",
+    "Texas": "TX",
+    "Utah": "UT",
+    "Vermont": "VT",
+    "Virginia": "VA",
+    "Washington": "WA",
+    "West Virginia": "WV",
+    "Wisconsin": "WI",
+    "Wyoming": "WY",
+    "District of Columbia": "DC",
+    "American Samoa": "AS",
+    "Guam": "GU",
+    "Northern Mariana Islands": "MP",
+    "Puerto Rico": "PR",
+    "United States Minor Outlying Islands": "UM",
+    "U.S. Virgin Islands": "VI",
+
+}
+
+#User input and adds commas adding input to state_freq_dict 
+states = input("enter state names: ").split()
+state_freq_dict = {}
+#iterated over list
+for item in states:
+    #checking if item is in dictionary
+    if item in state_freq_dict:
+        #incrementing if repeated
+        state_freq_dict[item] += 1
+    else:
+        #set to 1 if not repeated
+        state_freq_dict[item] = 1
+
 
 def get_state_abbrev_freq(text_states: str) -> dict:
     #if input was empty <--- not too sure if this will work but test is needed
