@@ -40,8 +40,8 @@ Import
 
 Julious H.
 Test cases:
-- Misspelled state(s) -> Value Error
-- Empty list -> ValueError?
+- Misspelled state(s) -> Value Error (DONE)
+- Empty list -> ValueError? (DONE) 
 
 Jalen S. (DONE)
 - All correct states will produced a abbreviation frequency list (DONE)

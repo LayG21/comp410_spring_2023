@@ -1,6 +1,7 @@
 """Unit-test cases for class project"""
+from typing import Self
 import unittest
-from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example
+from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, state_to_abb_dict
 
 
 class ProjectTestCase(unittest.TestCase):
@@ -72,6 +73,19 @@ Jalen S.
         text = 'Alaska,North Carolina,  New York , New Jersey, North Carolina, Washington'
         Expected results {'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1}
 """
+
+def test_state_name(self):
+    #Test for state_to_abb_dict    
+        correct_state = ('Alaska', 'North Carolina', 'New York', 'New Jersey', 'Washington')
+        statesabb = {'AK', 'NC', 'NY', 'NJ', 'WA'}
+        self.assertEqual(statesabb, state_to_abb_dict(correct_state))
+    #Test for misspelled state names    
+        with self.assetRaises(ValueError):  
+            state_to_abb_dict('Alasa', 'North Carolina', 'Nue York', 'New Jersie', 'Wasinton')
+    #Test for empty list
+        with self.assertRaises(ValueError): 
+            state_to_abb_dict('')
+            
 
 
 if __name__ == '__main__':
