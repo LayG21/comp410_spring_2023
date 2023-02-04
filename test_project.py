@@ -1,6 +1,6 @@
 """Unit-test cases for class project"""
 import unittest
-from project import email_domain_and_user_count, show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example
+from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example
 
 
 class ProjectTestCase(unittest.TestCase):
