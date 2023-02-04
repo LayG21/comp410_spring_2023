@@ -16,10 +16,11 @@ Expected results
 {'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1}
 
 Step 1: Prepping the input (Kamaria P.)
-Input is a string
+Input is a string named as input_states as function parameter (DONE)
 Input needs to be broken up/separated to commas (also worry about spacing; some sort of trimming)
-Need a dict of all written out states
-A dictionary for each state name and mapping its abbreviation to it State_to_abb_dict
+    - Input needs to be turned into a list named states
+Need a dict of all written out states (DONE)
+A dictionary for each state name and mapping its abbreviation to it State_to_abb_dict (DONE)
 A dictionary for state frequencies (how many times it appears in input) state_freq_dict
 
 Step 2: Iterate through input and check for valid state names (Jalen L.)
