@@ -56,17 +56,22 @@ def convert_text_to_digits_example(text: str) -> list:
 
 def email_domain_and_user_count(string_of_emails):
     dict_of_emails_and_users_count = {}
+    seen_emails = set()
     if not string_of_emails:
         return dict_of_emails_and_users_count
-    list_of_emails = string_of_emails.split(',')
-    for email in list_of_emails:
+    email_list = re.findall(r'[\w\.-]+@[\w\.-]+', string_of_emails)
+    for email in email_list:
+        if not re.match(r'[\w\.-]+@[\w\.-]+', email):
+            raise ValueError(f"{email} is not a valid email address")
         email_domain = email.split('@')[1]
-        if email_domain not in dict_of_emails_and_users_count:
-            dict_of_emails_and_users_count[email_domain] = 1
-        else:
-            dict_of_emails_and_users_count[email_domain] += 1
+        if email not in seen_emails:
+            seen_emails.add(email)
+            if email_domain not in dict_of_emails_and_users_count:
+                dict_of_emails_and_users_count[email_domain] = 1
+            else:
+                dict_of_emails_and_users_count[email_domain] += 1
     
-    return dict_of_emails_and_users_count
+    return dict(sorted(dict_of_emails_and_users_count.items()))
 
 def show_aggie_pride():
     """Show Aggie Pride"""
