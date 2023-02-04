@@ -78,4 +78,3 @@ class ProjectTestCase(unittest.TestCase):
             area_code_lookup('')
 if __name__ == '__main__':
     unittest.main()
-
