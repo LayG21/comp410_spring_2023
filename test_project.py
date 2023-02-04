@@ -1,6 +1,6 @@
 """Unit-test cases for class project"""
 import unittest
-from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example
+from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, area_code_lookup
 
 
 class ProjectTestCase(unittest.TestCase):
@@ -58,6 +58,23 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert_text_to_digits_example('')
 
+    def test_area_code_look(self):
+        """""Test to verify if area_code_lookup works as it should"""
+        text = '919-555-1212,212-555-1212 , 970-555-1212, 415-555-1212'
+        output_dict = {212:'NY', 415:'CA', 919:'NC', 970:'CO'}
+        self.assertEqual(output_dict, area_code_lookup(text))
+
+        #test set of other valid area codes
+        text1 = '336-554-3994, 603-554-3994, 207-654-3894, 208-654-3894'
+        output_dict1 = {207:'ME', 208:'ID', 336:'NC', 603:'NH'}
+        self.assertEqual(output_dict1, area_code_lookup(text1))
+
+        #test set of invalid area codes
+        with self.assertRaises(ValueError):
+            area_code_lookup('105-554-3994, 800-554-3994, 877-554-3994, 888-554-3994')
+
+        #test for empty list
+        with self.assertRaises(ValueError):
+            area_code_lookup('')
 if __name__ == '__main__':
     unittest.main()
-
