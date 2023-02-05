@@ -1,59 +1,116 @@
-"""
-Create a function which inputs a comma separated list of states and returns a dict of states and 
-    total number of times each state was seen.
+"""COMP-410 Spring 2023 Class Project"""
+import requests
+import re
 
-- The keys should be the state abbreviations, the values should be the total count.
-- Sort the dictionary alphabetically by state.
-- Be sure to handle variable spacing around the comma.
-- In the case of an invalid or misspelled state, raise a ValueError exception.
+def add_two_numbers(num1, num2):
+    """Adds two numbers together"""
+    return num1 + num2
 
-For example:
+def convert_text_numbers_to_integers(text_numbers:str) -> list:
+    """Convert comma separated list of numbhers zero, one, two, three, four, five, six, 
+    seven, eight, nine to integers"""
+    text_numbers = text_numbers.split(',')
+    numbers = []
+    for number in text_numbers:
+        number = number.strip()
+        if number == 'zero':
+            numbers.append(0)
+        elif number == 'one':
+            numbers.append(1)
+        elif number == 'two':
+            numbers.append(2)
+        elif number == 'three':
+            numbers.append(3)
+        elif number == 'four':
+            numbers.append(4)
+        elif number == 'five':
+            numbers.append(5)
+        elif number == 'six':
+            numbers.append(6)
+        elif number == 'seven':
+            numbers.append(7)
+        elif number == 'eight':
+            numbers.append(8)
+        elif number == 'nine':
+            numbers.append(9)
+        else:
+            raise ValueError(f'Unknown number {number}')
+    return numbers
 
-Input text
-text = 'Alaska,North Carolina,  New York , New Jersey, North Carolina, Washington'
 
-Expected results
-{'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1}
+def convert_text_to_digits_example(text: str) -> list:
+    """Converts a comma seperated list of text digits to integers"""
+    text_digits = {'zero': 0, 'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
+                   'six': 6, 'seven': 7, 'eight': 8, 'nine': 9}
 
-Step 1: Prepping the input (Kamaria P.)
-Input is a string named as input_states as function parameter (DONE)
-Input needs to be broken up/separated to commas (also worry about spacing; some sort of trimming)
-    - Input needs to be turned into a list named states
-Need a dict of all written out states (DONE)
-A dictionary for each state name and mapping its abbreviation to it State_to_abb_dict (DONE)
-A dictionary for state frequencies (how many times it appears in input) state_freq_dict
+    results = []
+    for digit in text.split(','):
+        digit = digit.strip()
+        if digit in text_digits:
+            results.append(text_digits[digit])
+        else:
+            raise ValueError('Invalid digit: ' + digit)
 
-Step 2: Iterate through input and check for valid state names (Jalen L.)
-For loop to iterate through each state in "text" variable for state in states
-    - check if state is in state_to_abb_dict
-        -if it is: (meaning its a valid state name)
-            check if state abbreviation has been added to frequency dictionary
-                - if state_to_abb_dict[state] in state_freq_dict:
-                    state_freq_dict[state_to_abb_dict[state]] += 1
-                - else
-                    state_freq_dict[state_to_abb_dict[state]] = 1
-        -if not:
-            - raise ValueError exception
-return sorted(state_freq_dict)
+    return results
 
-Import 
 
-Julious H.
-Test cases:
-- Misspelled state(s) -> Value Error (DONE)
-- Empty list -> ValueError? (DONE) 
+def email_domain_and_user_count(string_of_emails):
+    dict_of_emails_and_users_count = {}
+    seen_emails = set()
+    if not string_of_emails:
+        return dict_of_emails_and_users_count
+    email_list = re.findall(r'[\w\.-]+@[\w\.-]+', string_of_emails)
+    for email in email_list:
+        if not re.match(r'[\w\.-]+@[\w\.-]+', email):
+            raise ValueError(f"{email} is not a valid email address")
+        email_domain = email.split('@')[1]
+        if email not in seen_emails:
+            seen_emails.add(email)
+            if email_domain not in dict_of_emails_and_users_count:
+                dict_of_emails_and_users_count[email_domain] = 1
+            else:
+                dict_of_emails_and_users_count[email_domain] += 1
+    
+    return dict(sorted(dict_of_emails_and_users_count.items()))
 
-Jalen S. (DONE)
-- All correct states will produced a abbreviation frequency list (DONE)
-    - Input text (DONE)
-        text = 'Alaska,North Carolina,  New York , New Jersey, North Carolina, Washington' (DONE)
-        Expected results {'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1} (DONE)
+def show_aggie_pride():
+    """Show Aggie Pride"""
+    return 'Aggie Pride - Worldwide'
 
-"""
 
-#Dictionary of States to Abbrev.
-state_to_abb_dict = {
-  "Alabama": "AL",
+def reverse_list(input_list) -> list:
+    """Returns a list in reverse order"""
+    return input_list[::-1]
+
+def get_area_codes() -> dict:
+    """Returns a dict of known area codes"""
+    # Get the area code information from NANPA
+    url = requests.get('https://nationalnanpa.com/nanp1/npa_report.csv', timeout=10)
+    area_codes = {}
+    for line in url.text.split('\n'):
+        # skip the header lines
+        if line.startswith('NPA') or line.startswith('File Date') or not line:
+            continue
+        ac_info = line.split(',')
+        area_codes[ac_info[0]] = ac_info[8]
+    return area_codes
+
+def area_code_lookup(phone_nums:str) -> dict:
+    """Returns a dict of area codes and corresponding state"""
+    phone_list = sorted(phone_nums.replace(" ", "").split(","))
+    output_dict = {}
+    for num in phone_list:
+        area_code = num[0:3]
+        if ~bool(re.match(num, '/\d{3}-\d{3}-\d{4})/')) & (int(area_code) > 200):
+            output_dict[int(area_code)] = get_area_codes().get(area_code)
+        else:
+            raise ValueError('Invalid phone number: ' + num)
+    return output_dict
+
+def get_state_abbrev_freq(text_states: str) -> dict:
+    #Dictionary of States to Abbrev.
+    state_to_abb_dict = {
+    "Alabama": "AL",
     "Alaska": "AK",
     "Arizona": "AZ",
     "Arkansas": "AR",
@@ -113,31 +170,22 @@ state_to_abb_dict = {
 
 }
 
-#Get user input (Must have commas separating state names)
-states = input("Enter state names: ")
+    states = [x.strip() for x in text_states.split(",")]
+    state_freq_dict = {}
+    
+    for state in states:
+        #check for valid state names
+        if state in state_to_abb_dict:
+            #check if state has already been added to abbreviation frequency dict
+            if state_to_abb_dict[state] in state_freq_dict:
+                state_freq_dict[state_to_abb_dict[state]] += 1
+            #if not, add it
+            else:
+                state_freq_dict[state_to_abb_dict[state]] = 1
+        #If invalid state name, raise ValueError
+        else:
+            raise ValueError('Invalid State: ' + state) 
+    return sorted(state_freq_dict)
 
-#Iterate through input and replace names with abbreviations
-for key in state_to_abb_dict.keys():
-    states = states.replace(key, state_to_abb_dict[key])
-#Split input by commas and stripped whitespace
-states = [x.strip() for x in states.split(",")]
-#Sorted the abbreviated states
-sorted_states = sorted(states)
-
-state_freq_dict = {}
-#iterated over list
-for item in sorted_states:
-    #checking if item is in dictionary
-    if item in state_freq_dict:
-        #incrementing if repeated
-        state_freq_dict[item] += 1
-    else:
-        #set to 1 if not repeated
-        state_freq_dict[item] = 1
-
-#Print sorted abbreviated list
-print(state_freq_dict)
-
-"""Had to comment this out because it was causing an indentation error"""
-#if input was empty <--- not too sure if this will work but test is needed
-#def get_state_abbrev_freq(text_states: str) -> dict:
+if __name__ == '__main__':
+    print(show_aggie_pride())

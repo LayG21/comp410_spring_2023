@@ -1,7 +1,7 @@
 """Unit-test cases for class project"""
 from typing import Self
 import unittest
-from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, state_to_abb_dict
+from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, get_state_abbrev_freq
 
 
 class ProjectTestCase(unittest.TestCase):
@@ -59,33 +59,17 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert_text_to_digits_example('')
 
-"""
-Import 
-
-Julious H.
-Test cases:
-- Misspelled state(s) -> Value Error
-- Empty list -> ValueError?
-
-Jalen S.
-- All correct states will produced a abbreviation frequency list
-    - Input text
-        text = 'Alaska,North Carolina,  New York , New Jersey, North Carolina, Washington'
-        Expected results {'AK': 1, 'NC':2, 'NJ':1, 'NY':1, 'WA':1}
-"""
-
-def test_state_name(self):
-    #Test for state_to_abb_dict    
-        correct_state = ('Alaska', 'North Carolina', 'New York', 'New Jersey', 'Washington')
-        statesabb = {'AK', 'NC', 'NY', 'NJ', 'WA'}
-        self.assertEqual(statesabb, state_to_abb_dict(correct_state))
-    #Test for misspelled state names    
-        with self.assetRaises(ValueError):  
-            state_to_abb_dict('Alasa', 'North Carolina', 'Nue York', 'New Jersie', 'Wasinton')
-    #Test for empty list
-        with self.assertRaises(ValueError): 
-            state_to_abb_dict('')
-            
+    def test_state_name(self):
+        #Test for state_to_abb_dict    
+            correct_state = 'Alaska, North Carolina, New York, New Jersey, Washington'
+            statesabb = ['AK', 'NC', 'NJ', 'NY', 'WA']
+            self.assertEqual(statesabb, get_state_abbrev_freq(correct_state))
+        #Test for misspelled state names    
+            with self.assertRaises(ValueError):  
+                get_state_abbrev_freq('Alasa, North Carolina, Nue York, New Jersie, Wasinton')
+        #Test for empty list
+            with self.assertRaises(ValueError): 
+                get_state_abbrev_freq('')
 
 
 if __name__ == '__main__':
