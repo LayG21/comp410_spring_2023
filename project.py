@@ -185,7 +185,7 @@ def get_state_abbrev_freq(text_states: str) -> dict:
         #If invalid state name, raise ValueError
         else:
             raise ValueError('Invalid State: ' + state) 
-    return sorted(state_freq_dict)
+    return dict(sorted(state_freq_dict.items()))
 
 if __name__ == '__main__':
     print(show_aggie_pride())
