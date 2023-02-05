@@ -168,7 +168,7 @@ def get_state_abbrev_freq(text_states: str) -> dict:
     "United States Minor Outlying Islands": "UM",
     "U.S. Virgin Islands": "VI",
 
-}
+    }
 
     states = [x.strip() for x in text_states.split(",")]
     state_freq_dict = {}
