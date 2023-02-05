@@ -1,5 +1,5 @@
 """Unit-test cases for class project"""
-from typing_extensions import Self
+from typing import Self
 import unittest
 
 from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, area_code_lookup,  get_state_abbrev_freq
