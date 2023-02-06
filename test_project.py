@@ -1,7 +1,7 @@
 """Unit-test cases for class project"""
 import unittest
 
-from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, area_code_lookup,  get_state_abbrev_freq
+from project import email_domain_and_user_count, show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, area_code_lookup,  get_state_abbrev_freq
 
 
 
@@ -92,6 +92,24 @@ class ProjectTestCase(unittest.TestCase):
         #Test for empty list
             with self.assertRaises(ValueError): 
                 get_state_abbrev_freq('')        
-            
+    def test_email_domain_and_user_count(self):
+        text = 'joe@gmail.com, joe1@gmail.com, john@outlook.com, jerry@abc.com, julie@xyz.com, tim@abc.com, joe@gmail.com'
+        results = {'abc.com':2, 'gmail.com':2, 'outlook.com':1, 'xyz.com':1}
+        self.assertDictEqual(results, email_domain_and_user_count(text))
+
+    def test_email_domain_and_user_count_2(self):
+        text = 'joe@gmail.com, john@outlook.com, jerry@abc.com, julie@xyz.com, tim@abc.com, joe@gmail.com'
+        results = {'abc.com':2, 'gmail.com':1, 'outlook.com':1, 'xyz.com':1}
+        self.assertDictEqual(results, email_domain_and_user_count(text))
+
+    def test_email_domain_and_user_count_3(self):
+        text = 'test@gmail.com'
+        results = {'gmail.com':1}
+        self.assertDictEqual(results, email_domain_and_user_count(text))
+
+    def test_email_domain_and_user_count_4(self):
+        text = ''
+        results = {}
+        self.assertDictEqual(results, email_domain_and_user_count(text))
 if __name__ == '__main__':
     unittest.main()
