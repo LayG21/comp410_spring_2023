@@ -1,6 +1,8 @@
 """Unit-test cases for class project"""
 import unittest
-from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, area_code_lookup
+
+from project import show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, area_code_lookup,  get_state_abbrev_freq
+
 
 
 class ProjectTestCase(unittest.TestCase):
@@ -58,6 +60,7 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert_text_to_digits_example('')
 
+
     def test_area_code_look(self):
         """""Test to verify if area_code_lookup works as it should"""
         text = '919-555-1212,212-555-1212 , 970-555-1212, 415-555-1212'
@@ -76,5 +79,19 @@ class ProjectTestCase(unittest.TestCase):
         #test for empty list
         with self.assertRaises(ValueError):
             area_code_lookup('')
+
+
+    def test_state_name(self):
+        #Test for state_to_abb_dict    
+            correct_state = 'Alaska, North Carolina, New York, New Jersey, Washington'
+            statesabb = {'AK': 1, 'NC': 1, 'NJ': 1, 'NY': 1, 'WA': 1}
+            self.assertTrue(statesabb, get_state_abbrev_freq(correct_state))
+        #Test for misspelled state names    
+            with self.assertRaises(ValueError):  
+                get_state_abbrev_freq('Alasa, North Carolina, Nue York, New Jersie, Wasinton')
+        #Test for empty list
+            with self.assertRaises(ValueError): 
+                get_state_abbrev_freq('')        
+            
 if __name__ == '__main__':
     unittest.main()
