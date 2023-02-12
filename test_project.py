@@ -1,8 +1,6 @@
 """Unit-test cases for class project"""
 import unittest
-
-from project import email_domain_and_user_count, show_aggie_pride, reverse_list, get_area_codes, convert_text_numbers_to_integers, convert_text_to_digits_example, area_code_lookup,  get_state_abbrev_freq
-
+from project import *
 
 
 class ProjectTestCase(unittest.TestCase):
@@ -60,7 +58,6 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             convert_text_to_digits_example('')
 
-
     def test_area_code_look(self):
         """""Test to verify if area_code_lookup works as it should"""
         text = '919-555-1212,212-555-1212 , 970-555-1212, 415-555-1212'
@@ -80,18 +77,37 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             area_code_lookup('')
 
+    def test_area_code_look_csv(self):
+        # read the csv file
+        data = read_csv_file('data.csv')
+        # fill in the expected values based on inspection
+        expected = {203: 'CT', 211: '', 212: 'NY', 218: 'MN', 229: 'GA', 249: 'ONTARIO', 254: 'TX', 283: 'OH',
+                    326: 'OH', 328: '', 337: 'LA', 341: 'CA', 348: '', 358: '', 360: 'WA', 363: 'NY', 381: '', 388: '',
+                    402: 'NE', 411: '', 414: 'WI', 417: 'MO', 421: '', 434: 'VA', 448: 'FL', 482: '', 487: '', 492: '',
+                    494: '', 512: 'TX', 522: 'NANP AREA', 534: 'WI', 541: 'OR', 544: 'NANP AREA', 550: 'NANP AREA',
+                    551: 'NJ', 561: 'FL', 563: 'IA', 573: 'MO', 591: '', 594: '', 595: '', 596: '', 602: 'AZ',
+                    610: 'PA', 612: 'MN', 626: 'CA', 627: '', 630: 'IL', 636: 'MO', 642: '', 652: '', 656: 'FL',
+                    659: 'AL', 686: 'VA', 696: '', 704: 'NC', 737: 'TX', 740: 'OH', 743: 'NC', 766: '', 775: 'NV',
+                    781: 'MA', 784: 'ST. VINCENT & GRENADINES', 789: '', 804: 'VA', 813: 'FL', 847: 'IL', 850: 'FL',
+                    858: 'CA', 863: 'FL', 864: 'SC', 865: 'TN', 866: 'NANP AREA', 870: 'AR', 871: '', 880: '', 889: '',
+                    893: '', 900: 'NANP AREA', 901: 'TN', 902: 'NOVA SCOTIA - PRINCE EDWARD ISLAND', 910: 'NC',
+                    913: 'KS', 922: '', 929: 'NY', 932: '', 933: '', 937: 'OH', 969: '', 987: '', 995: ''}
+        # get the actual results
+        results = area_code_lookup(','.join(data['Phone']))
+        # make sure they are equal
+        self.assertDictEqual(expected, results)
 
     def test_state_name(self):
-        #Test for state_to_abb_dict    
-            correct_state = 'Alaska, North Carolina, New York, New Jersey, Washington'
-            statesabb = {'AK': 1, 'NC': 1, 'NJ': 1, 'NY': 1, 'WA': 1}
-            self.assertTrue(statesabb, get_state_abbrev_freq(correct_state))
-        #Test for misspelled state names    
-            with self.assertRaises(ValueError):  
-                get_state_abbrev_freq('Alasa, North Carolina, Nue York, New Jersie, Wasinton')
-        #Test for empty list
-            with self.assertRaises(ValueError): 
-                get_state_abbrev_freq('')        
+        # Test for state_to_abb_dict
+        correct_state = 'Alaska, North Carolina, New York, New Jersey, Washington'
+        statesabb = {'AK': 1, 'NC': 1, 'NJ': 1, 'NY': 1, 'WA': 1}
+        self.assertTrue(statesabb, get_state_abbrev_freq(correct_state))
+        # Test for misspelled state names
+        with self.assertRaises(ValueError):
+            get_state_abbrev_freq('Alasa, North Carolina, Nue York, New Jersie, Wasinton')
+        # Test for empty list
+        with self.assertRaises(ValueError):
+            get_state_abbrev_freq('')
     def test_email_domain_and_user_count(self):
         text = 'joe@gmail.com, joe1@gmail.com, john@outlook.com, jerry@abc.com, julie@xyz.com, tim@abc.com, joe@gmail.com'
         results = {'abc.com':2, 'gmail.com':2, 'outlook.com':1, 'xyz.com':1}
@@ -111,5 +127,48 @@ class ProjectTestCase(unittest.TestCase):
         text = ''
         results = {}
         self.assertDictEqual(results, email_domain_and_user_count(text))
+
+    def test_read_csv_file(self):
+        """Tests to make sure the sample csv file is read correctly"""
+        data = read_csv_file('data.csv')
+        # make sure headers are correct
+        for header in ["First Name", "Last Name", "Email", "Phone", "Credit Card", "SSN", "DOB", "City", "State"]:
+            self.assertIn(header, data)
+        # length of all lists should be the same as the length of the file minus the header row
+        with open('data.csv', 'r') as f:
+            lines = f.readlines()
+        rows = len(lines) - 1
+        for key in data:
+            self.assertEqual(len(data[key]), rows)
+
+    def test_email_domain_and_user_count_csv(self):
+        """Try reading email domains from the csv file"""
+        # read the csv file
+        data = read_csv_file('data.csv')
+        # check that is was read as expected
+        expected = {'abc.com': 23, 'gmail.com': 17, 'hotmail.com': 18, 'outlook.com': 15,
+                    'xyz.com': 8, 'yahoo.com': 14}
+        results = email_domain_and_user_count(','.join(data['Email']))
+        self.assertDictEqual(expected, results)
+
+    def test_get_credit_card_type(self):
+        # load data.csv file
+        data = read_csv_file('data.csv')
+        expected = {'Discover': 22, 'MasterCard': 18, 'American Express': 40, 'Visa': 20}
+        results = get_credit_card_type(','.join(data['Credit Card']))
+        self.assertEqual(expected, results)
+
+    def test_get_ssn_state_prefix(self):
+        """Check to make sure the correct number of prefixes and assignments are returned"""
+        results = get_ssn_assignment_prefix()
+        self.assertEqual(len(results), 755)
+        # check total assignment counts
+        assigned = set(results.values())
+        # 50 states plus DC, PR
+        # 'Enumeration at Entry', 'Territories', 'Railroad Board**', 'Not Issued'
+        # Therefore expected total is 56
+        self.assertEqual(len(assigned), 56)
+
+
 if __name__ == '__main__':
     unittest.main()
