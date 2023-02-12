@@ -1,6 +1,8 @@
 """COMP-410 Spring 2023 Class Project"""
 import requests
 import re
+import csv
+
 
 def add_two_numbers(num1, num2):
     """Adds two numbers together"""
@@ -95,14 +97,17 @@ def get_area_codes() -> dict:
         area_codes[ac_info[0]] = ac_info[8]
     return area_codes
 
+
 def area_code_lookup(phone_nums:str) -> dict:
     """Returns a dict of area codes and corresponding state"""
+    # optimize for speed by getting the area codes once instead of calling for each num in phone_list
+    ac_dict = get_area_codes()
     phone_list = sorted(phone_nums.replace(" ", "").split(","))
     output_dict = {}
     for num in phone_list:
         area_code = num[0:3]
         if ~bool(re.match(num, '/\d{3}-\d{3}-\d{4})/')) & (int(area_code) > 200):
-            output_dict[int(area_code)] = get_area_codes().get(area_code)
+            output_dict[int(area_code)] = ac_dict[area_code]
         else:
             raise ValueError('Invalid phone number: ' + num)
     return output_dict
@@ -188,5 +193,92 @@ def get_state_abbrev_freq(text_states: str) -> dict:
             raise ValueError('Invalid State: ' + state) 
     return dict(sorted(state_freq_dict.items()))
 
+
+def read_csv_file(csv_file: str) -> dict:
+    """Reads a csv file and returns a dict of lists for each row
+       For example:
+            {'First Name': ['John', 'Jane', 'Joe'], 'Last Name': ['Smith', 'Doe', 'Rogers']}
+    """
+    if not csv_file:
+        return {}
+    with open(csv_file, 'r') as file:
+        reader = csv.reader(file)
+        # get the header row
+        header = next(reader)
+        # get the rest of the rows
+        rows = [row for row in reader]
+    # return a dict of lists with key equal to the header and value equal to the list of values
+    return {header[i]: [row[i] for row in rows] for i in range(len(header))}
+
+
+def get_ssn_assignment_prefix():
+    """Returns a dict of SSN prefixes and their corresponding states.  If a state has multiple prefixes
+       assigned, there will be multiple entries.
+
+       For example:
+          {4: 'Maine', 5: 'Maine', ..., 232: 'North Carolina', 233: 'West Virginia', 234: 'West Virginia', ...}
+    """
+    ssn_prefix = {}
+    with open('ssn.txt') as f:
+        for line in f:
+            # treat a # as a comment
+            if line.startswith('#'):
+                continue
+            # if there is a dash in the line, split it and add the range to the dict
+            elif '-' in line:
+                ls = line.strip().split('\t')
+                # find the start and end of the range such as 4-7
+                start, end = ls[0].split('-')
+                # add an entry for each assignment in the range
+                for i in range(int(start), int(end) + 1):
+                    ssn_prefix[i] = ls[1]
+            # handle multiple ssn values comma separated
+            elif ',' in line:
+                ls = line.strip().split('\t')
+                # handle multiple individual values such as 525,585
+                for i in ls[0].split(','):
+                    ssn_prefix[int(i)] = ls[1]
+            # single ssn prefix such as 232
+            else:
+                ls = line.strip().split('\t')
+                ssn_prefix[int(ls[0])] = ls[1]
+    return ssn_prefix
+
+
+def get_credit_card_type(text: str) -> dict:
+    """Returns a dict of credit card types and their counts"""
+    # If text is empty, nothing to do
+    if not text:
+        return {}
+
+    # Create a conversion dictionary
+    conversion = {'4': 'Visa', '5': 'MasterCard', '3': 'American Express', '6': 'Discover'}
+
+    results = {}
+    for t in text.split(','):
+        if t.strip()[0] in conversion:
+            card_type = conversion[t.strip()[0]]
+            if card_type in results:
+                results[card_type] += 1
+            else:
+                results[card_type] = 1
+        else:
+            raise ValueError(f'Invalid credit card number: {t.strip()}')
+    return results
+
+
 if __name__ == '__main__':
-    print(show_aggie_pride())
+    print(show_aggie_pride(), end='\n\n')
+
+    # read the data file
+    csv_data = read_csv_file('data.csv')
+
+    # Summarize the credit card types
+    print('Credit Card Types')
+    print(get_credit_card_type(','.join(csv_data['Credit Card'])))
+    print()
+
+    # Summarize the email domains
+    print('Email Domains')
+    print(email_domain_and_user_count(','.join(csv_data['Email'])))
+    print()
