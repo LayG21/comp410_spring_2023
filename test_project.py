@@ -76,6 +76,18 @@ class ProjectTestCase(unittest.TestCase):
         #test for empty list
         with self.assertRaises(ValueError):
             area_code_lookup('')
+        
+        # test for phone with no area code
+        with self.assertRaises(ValueError):
+            area_code_lookup('919-555-1212,212-555-1212 , 999-9999')
+        
+        #test with both wrong format and invalid area code
+        with self.assertRaises(ValueError):
+            area_code_lookup('921555-1212,221-555-1212 , 999-9999')
+        
+        #test with wrong format
+        with self.assertRaises(ValueError):
+            area_code_lookup('9215551212,  2215551212 , 7189999999')
 
     def test_area_code_look_csv(self):
         # read the csv file

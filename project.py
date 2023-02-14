@@ -106,7 +106,7 @@ def area_code_lookup(phone_nums:str) -> dict:
     output_dict = {}
     for num in phone_list:
         area_code = num[0:3]
-        if ~bool(re.match(num, '/\d{3}-\d{3}-\d{4})/')) & (int(area_code) > 200):
+        if bool(re.match(r"(\d{3}-\d{3}-\d{4})",num)) & (int(area_code) > 200):
             output_dict[int(area_code)] = ac_dict[area_code]
         else:
             raise ValueError('Invalid phone number: ' + num)
