@@ -181,6 +181,14 @@ class ProjectTestCase(unittest.TestCase):
         # Therefore expected total is 56
         self.assertEqual(len(assigned), 56)
 
+    
+        
+
+       
+    
+
+    
+
 
 if __name__ == '__main__':
     unittest.main()
