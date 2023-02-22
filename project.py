@@ -266,9 +266,49 @@ def get_credit_card_type(text: str) -> dict:
             raise ValueError(f'Invalid credit card number: {t.strip()}')
     return results
 
+def area_code_prefixes() -> list:
+    """Returns a list of area code prefixes that do not belong to the US and its territories"""
+
+    state_names = 'Alabama, Alaska, Arizona, Arkansas, California,  Colorado, Connecticut, Delaware, Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Michigan, Minnesota, Mississippi, Missouri, Montana, Nebraska, Nevada, New Hampshire, New Jersey, New Mexico, New York, North Carolina, North Dakota, Ohio, Oklahoma, Oregon, Pennsylvania, Rhode Island, South Carolina, South Dakota, Tennessee, Texas, Utah, Vermont, Virginia, Washington, West Virginia, Wisconsin, Wyoming, District of Columbia, American Samoa, Guam, Northern Mariana Islands, Puerto Rico, United States Minor Outlying Islands, U.S. Virgin Islands'
+    state_abbrev = get_state_abbrev_freq(state_names)  # get a dict of abbreviations and their counts
+    ac_dict = get_area_codes() # get a dict of area codes and their abbreviations
+
+    data = read_csv_file('data.csv') # read the data from the data.csv file
+    phone_nums_dict = data['Phone'] # get a list of phone numbers
+
+
+    phone_nums_list = phone_nums_dict # does not really make any difference, I could have kept 'phone_nums_dict', I did it just for name sake
+    output_list = [] # create an empty list
+
+
+    for num in phone_nums_list:
+        area_code = num[0:3] # get the area code prefix from the phone numbers in phone_nums_list
+
+        #check for valid phone numbers whose state abbrevation is not specified in get_state_abbrev_freq and append its area code prefix to an output list
+        if bool(re.match(r"(\d{3}-\d{3}-\d{4})",num)) & (int(area_code) > 200) and ac_dict[area_code] not in state_abbrev.keys():
+            output_list.append(int(area_code))
+
+   
+    
+    return output_list
+
+    
+    
+
+    
+
+
 
 if __name__ == '__main__':
     print(show_aggie_pride(), end='\n\n')
+
+   
+
+   
+
+
+
+    print(area_code_prefixes())
 
     # read the data file
     csv_data = read_csv_file('data.csv')
