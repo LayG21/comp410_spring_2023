@@ -76,6 +76,32 @@ def email_domain_and_user_count(string_of_emails):
     return dict(sorted(dict_of_emails_and_users_count.items()))
 
     def find_duplicate_emails(csv_file):
+        data = 'data.csv'
+        map = {}
+        output = []
+        output_num = 0;
+        email=[]
+        with open (data,'r') as f:
+            reader=DictReader(f)
+            for row in reader:
+                email.append(row['Email'])
+        
+        for emails in email:
+            if emails not in map:
+                map.append(email[emails])
+            else:
+                output[output_num] = emails
+                output_num += 1
+        
+        return output
+            
+
+        
+
+
+
+
+ 
         #Pseudo Code
             #1. Iterate though csv_file(data.csv) and store emails into a new list (list_of_emails var)
             #2. Create a map (store seen emails)
