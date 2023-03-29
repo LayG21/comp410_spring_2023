@@ -75,6 +75,17 @@ def email_domain_and_user_count(string_of_emails):
     
     return dict(sorted(dict_of_emails_and_users_count.items()))
 
+    def find_duplicate_emails(csv_file):
+        #Pseudo Code
+            #1. Iterate though csv_file(data.csv) and store emails into a new list (list_of_emails var)
+            #2. Create a map (store seen emails)
+            #3. Create a return_list var (store duplicate emails)
+            #4  Loop though list_of_emails 
+            #5.     Check: if not seen -> store in map; i++
+            #6.            if already seen once -> add to return_list; i++
+            #7. Return return_list 
+        return ""
+
 def show_aggie_pride():
     """Show Aggie Pride"""
     return 'Aggie Pride - Worldwide'
