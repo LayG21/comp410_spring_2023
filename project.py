@@ -246,6 +246,30 @@ def get_ssn_assignment_prefix():
                 ssn_prefix[int(ls[0])] = ls[1]
     return ssn_prefix
 
+def get_ssn_prefix_count():
+    
+    #Kamaria P.
+    #Step 1: Format the input
+    #Create string variable for state_names
+    #Isolate the SSNs from the table in csv file; get SSNs prefixes in array
+    
+    #Jalen Lewis
+    #Step 2: iterate through SSN prefixes to get state names 
+    #For SSN in ssn_array:
+        #Isolate the SSN prefix
+        #checking for special case SSN
+        #Call the get_ssn_assignment_prefix() to get the SSN to state
+        #Append the state to state_names with a comma (state_names += state + ", ")
+    #Call and return the state_abbrev_freq() 
+
+
+
+    #Test cases:
+    #Jalen Shine and Julious
+    # 1) File not found
+    # 2) Make sure that special case SSNs are skipped
+    # 3) Empty CSV?
+    # 4) Expected output example from Github  
 
 def get_credit_card_type(text: str) -> dict:
     """Returns a dict of credit card types and their counts"""
