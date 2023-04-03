@@ -2,6 +2,7 @@
 import requests
 import re
 import csv
+from csv import DictReader
 
 
 def add_two_numbers(num1, num2):
@@ -75,42 +76,24 @@ def email_domain_and_user_count(string_of_emails):
     
     return dict(sorted(dict_of_emails_and_users_count.items()))
 
-    def find_duplicate_emails(csv_file):
-        data = 'data.csv'
-        map = {}
-        output = []
-        output_num = 0;
-        email=[]
-        with open (data,'r') as f:
-            reader=DictReader(f)
-            for row in reader:
-                email.append(row['Email'])
-        
-        for emails in email:
-            if emails not in map:
-                map.append(email[emails])
-            else:
-                output[output_num] = emails
-                output_num += 1
-        
-        return output
-            
-
-        
-
-
-
-
- 
-        #Pseudo Code
-            #1. Iterate though csv_file(data.csv) and store emails into a new list (list_of_emails var)
-            #2. Create a map (store seen emails)
-            #3. Create a return_list var (store duplicate emails)
-            #4  Loop though list_of_emails 
-            #5.     Check: if not seen -> store in map; i++
-            #6.            if already seen once -> add to return_list; i++
-            #7. Return return_list 
-        return ""
+    
+def find_duplicate_emails(data):
+    data= './data.csv'
+    datamap = {}
+    output = []
+    output_num = 0
+    email = []
+    with open(data, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            email.append(row['Email'])
+    for emailFound in range(len(email)):
+        if email[emailFound] in datamap.keys():
+            output.append(email[emailFound])
+            output_num += 1
+        else:
+            datamap[email[emailFound]] = 1
+    return output
 
 def show_aggie_pride():
     """Show Aggie Pride"""
