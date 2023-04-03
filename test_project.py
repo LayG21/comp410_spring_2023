@@ -187,14 +187,10 @@ class ProjectTestCase(unittest.TestCase):
         # Therefore expected total is 56
         self.assertEqual(len(assigned), 56)
 
-    
-        
-
-       
-    
-
-    
-
-
+    def test_find_duplicate_emails(self):
+        data = './data.csv'
+        result = find_duplicate_emails(data)
+        self.assertEqual(len(result),5) 
+  
 if __name__ == '__main__':
     unittest.main()

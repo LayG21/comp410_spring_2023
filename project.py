@@ -2,6 +2,7 @@
 import requests
 import re
 import csv
+from csv import DictReader
 
 
 def add_two_numbers(num1, num2):
@@ -74,6 +75,25 @@ def email_domain_and_user_count(string_of_emails):
                 dict_of_emails_and_users_count[email_domain] += 1
     
     return dict(sorted(dict_of_emails_and_users_count.items()))
+
+    
+def find_duplicate_emails(data):
+    data= './data.csv'
+    datamap = {}
+    output = []
+    output_num = 0
+    email = []
+    with open(data, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            email.append(row['Email'])
+    for emailFound in range(len(email)):
+        if email[emailFound] in datamap.keys():
+            output.append(email[emailFound])
+            output_num += 1
+        else:
+            datamap[email[emailFound]] = 1
+    return output
 
 def show_aggie_pride():
     """Show Aggie Pride"""
