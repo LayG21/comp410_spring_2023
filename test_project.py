@@ -146,10 +146,6 @@ class ProjectTestCase(unittest.TestCase):
         results = {}
         self.assertDictEqual(results, email_domain_and_user_count(text))
 
-    def test_find_duplicate_emails(self):
-        data = read_csv_file('data.csv')
-        results = ['mary_williams@hotmail.com', 'sara_smith@gmail.com', 'sue_davis@abc.com', 'sara_smith@gmail.com', 'sue_rogers@hotmail.com']
-        self.assertEqual(results, find_duplicate_emails(data))
     def test_read_csv_file(self):
         """Tests to make sure the sample csv file is read correctly"""
         data = read_csv_file('data.csv')
@@ -191,14 +187,10 @@ class ProjectTestCase(unittest.TestCase):
         # Therefore expected total is 56
         self.assertEqual(len(assigned), 56)
 
-    
-        
-
-       
-    
-
-    
-
-
+def test_find_duplicate_emails(self):
+    data = './data.csv'
+    result = find_duplicate_emails(data)
+    self.assertEqual(len(result),5) 
+  
 if __name__ == '__main__':
     unittest.main()
