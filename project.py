@@ -62,10 +62,11 @@ def email_domain_and_user_count(string_of_emails):
     seen_emails = set()
     if not string_of_emails:
         return dict_of_emails_and_users_count
-    email_list = re.findall(r'[\w\.-]+@[\w\.-]+', string_of_emails)
+    try:
+        email_list = re.findall(r'[\w\.-]+@[\w\.-]+', string_of_emails)
+    except ValueError as e:
+        raise ValueError(f"Invalid input string: {e}")
     for email in email_list:
-        if not re.match(r'[\w\.-]+@[\w\.-]+', email):
-            raise ValueError(f"{email} is not a valid email address")
         email_domain = email.split('@')[1]
         if email not in seen_emails:
             seen_emails.add(email)
