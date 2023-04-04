@@ -251,6 +251,7 @@ def get_ssn_prefix_count():
     #Kamaria P.
     #Step 1: Format the input
     #Create string variable for state_names
+    state_names = input()
     #Isolate the SSNs from the table in csv file; get SSNs prefixes in array
     ssn_prefixes = [ "030",
                     "353",
