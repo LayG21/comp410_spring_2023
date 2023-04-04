@@ -2,6 +2,7 @@
 import requests
 import re
 import csv
+import os
 
 
 def add_two_numbers(num1, num2):
@@ -183,7 +184,9 @@ def get_state_abbrev_freq(text_states: str) -> dict:
     
     for state in states:
         #check for valid state names
-        if state in state_to_abb_dict:
+        if state == "":
+            continue
+        elif state in state_to_abb_dict:
             #check if state has already been added to abbreviation frequency dict
             if state_to_abb_dict[state] in state_freq_dict:
                 state_freq_dict[state_to_abb_dict[state]] += 1
@@ -246,130 +249,38 @@ def get_ssn_assignment_prefix():
                 ssn_prefix[int(ls[0])] = ls[1]
     return ssn_prefix
 
-def get_ssn_prefix_count():
+def get_ssn_prefix_count(file_name: str) -> dict:
+    """Returns a dictionary of how often a an SSN from each state occurs in a file"""
+    #get data from file
+    #if file is empty, read_csv_file returns {}
+
+    if file_name == '' or not os.path.isfile(file_name):
+        raise FileNotFoundError("File '" + file_name + "' is not found")
+
+    csv_data = read_csv_file(file_name)
+
+    if csv_data == {}:
+        return csv_data
+    elif csv_data.get("SSN") is None:
+        raise ValueError("File missing SSN category")
     
-    #Kamaria P.
-    #Step 1: Format the input
-    #Create string variable for state_names
-    state_names = input()
-    #Isolate the SSNs from the table in csv file; get SSNs prefixes in array
-    ssn_prefixes = [ "030",
-                    "353",
-                    "344",
-                    "536",
-                    "073",
-                    "149",
-                    "460",
-                    "139",
-                    "525",
-                    "513",
-                    "450",
-                    "127",
-                    "170",
-                    "084",
-                    "444",
-                    "387",
-                    "082",
-                    "029",
-                    "357",
-                    "272",
-                    "456",
-                    "477",
-                    "342",
-                    "242",
-                    "129",
-                    "549",
-                    "022",
-                    "497",
-                    "423",
-                    "126",
-                    "110",
-                    "363",
-                    "253",
-                    "449",
-                    "237",
-                    "537",
-                    "294",
-                    "459",
-                    "318",
-                    "421",
-                    "531",
-                    "350",
-                    "083",
-                    "575",
-                    "408",
-                    "408",
-                    "408",
-                    "213",
-                    "288",
-                    "306",
-                    "333",
-                    "137",
-                    "035",
-                    "316",
-                    "278",
-                    "447",
-                    "079",
-                    "228",
-                    "029",
-                    "210",
-                    "391",
-                    "143",
-                    "116",
-                    "022",
-                    "283",
-                    "238",
-                    "045",
-                    "498",
-                    "082",
-                    "005",
-                    "350",
-                    "113",
-                    "064",
-                    "448",
-                    "202",
-                    "265",
-                    "482",
-                    "443",
-                    "428",
-                    "011",
-                    "068",
-                    "490",
-                    "228",
-                    "142",
-                    "519",
-                    "012",
-                    "026",
-                    "334",
-                    "083",
-                    "259",
-                    "073",
-                    "386",
-                    "410",
-                    "227",
-                    "335",
-                    "207",
-                    "004"
-
-    ]
+    #get ssn data
+    ssn_data = csv_data["SSN"]
     
-    #Jalen Lewis
-    #Step 2: iterate through SSN prefixes to get state names 
-    #For SSN in ssn_array:
-        #Isolate the SSN prefix
-        #checking for special case SSN
-        #Call the get_ssn_assignment_prefix() to get the SSN to state
-        #Append the state to state_names with a comma (state_names += state + ", ")
-    #Call and return the state_abbrev_freq() 
+    #get ssn to state mapping
+    prefix_to_state_dict = get_ssn_assignment_prefix()
 
+    state_dict = get_state_abbrev()
+  
+    #hold each state name to pass to get_state_abbrev_freq()
+    state_names = ""
 
-
-    #Test cases:
-    #Jalen Shine and Julious
-    # 1) File not found
-    # 2) Make sure that special case SSNs are skipped
-    # 3) Empty CSV?
-    # 4) Expected output example from Github  
+    for prefix in ssn_data:
+      state_name = prefix_to_state_dict[int(prefix[0:3])].strip()
+      if state_name in state_dict:
+        state_names += state_name + ","      
+    
+    return get_state_abbrev_freq(state_names)   
 
 def get_credit_card_type(text: str) -> dict:
     """Returns a dict of credit card types and their counts"""
@@ -430,3 +341,6 @@ if __name__ == '__main__':
     print('Email Domains')
     print(email_domain_and_user_count(','.join(csv_data['Email'])))
     print()
+
+    # Find frequency of SSN states in file
+    print(get_ssn_prefix_count('data.csv'))
