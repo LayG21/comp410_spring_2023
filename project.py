@@ -267,6 +267,32 @@ def get_ssn_assignment_prefix():
                 ssn_prefix[int(ls[0])] = ls[1]
     return ssn_prefix
 
+def get_ssn_prefix_count(ssn_array: list) -> dict:
+    print(get_ssn_assignment_prefix())
+    #get ssn to state mapping
+    prefix_to_state_dict = get_ssn_assignment_prefix()
+
+    state_dict = get_state_abbrev()
+  
+    #hold each state name to pass to get_state_abbrev_freq()
+    state_names = ""
+
+    prefix_count = {}
+
+    for i in range(len(ssn_array)):
+      #get prefix of each ssn
+      prefix = int(ssn_array[i][0:3])
+
+      state_name = prefix_to_state_dict[prefix].strip()
+      if state_name in state_dict:
+        #prevent last state from having a comma
+        if i == (len(ssn_array) - 1):
+            state_names += state_name 
+        else:     
+            state_names += state_name + ","
+    print("State names: " + state_names)
+    prefix_count = get_state_abbrev_freq(state_names)
+    return prefix_count   
 
 def get_credit_card_type(text: str) -> dict:
     """Returns a dict of credit card types and their counts"""
@@ -327,3 +353,12 @@ if __name__ == '__main__':
     print('Email Domains')
     print(email_domain_and_user_count(','.join(csv_data['Email'])))
     print()
+
+    # Find frequency of SSN states in file
+    data = read_csv_file('data.csv')
+    ssn_array = data["SSN"]
+    print(get_ssn_prefix_count(ssn_array))
+
+
+
+    
