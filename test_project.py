@@ -190,15 +190,15 @@ class ProjectTestCase(unittest.TestCase):
     def test_get_prefix_count(self):
         data = read_csv_file('data.csv')
         socials = data["SSN"]
-        result = { {'AL': 2, 'CA': 1, 'CT': 1, 'FL': 1, 'GA': 1, 'HI': 1, 'IA': 1, 'ID': 1, 'IL': 11, 'IN': 2, 
+        result = {'AL': 2, 'CA': 1, 'CT': 1, 'FL': 1, 'GA': 1, 'HI': 1, 'IA': 1, 'ID': 1, 'IL': 11, 'IN': 2, 
                     'KS': 1, 'MA': 9, 'MD': 1, 'ME': 2, 'MI': 2, 'MN': 1, 'MO': 3, 'MS': 1, 'NJ': 6, 'NM': 1, 'NY': 17, 'OH': 5, 'OK': 4, 
-                    'PA': 4, 'RI': 1, 'TN': 2, 'TX': 5, 'VA': 3, 'WA': 3, 'WI': 3, 'WV': 1}}
+                    'PA': 4, 'RI': 1, 'TN': 2, 'TX': 5, 'VA': 3, 'WA': 3, 'WI': 3, 'WV': 1}
         self.assertEqual(result, get_ssn_prefix_count(socials))
 
     def test_invalid_ssn_prefix_array(self):
-        invalid_nums = ["587-00-2398", "999-00-3445", "751-00-3430"]
-        result = {}
-        self.assertEqual(result, get_ssn_prefix_count(invalid_nums))
+        invalid_nums = ["587-00-2398", "691-00-3445", "751-00-3430"]
+        with self.assertRaises(ValueError):
+            get_ssn_prefix_count(invalid_nums)
     
 
 

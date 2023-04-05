@@ -184,9 +184,7 @@ def get_state_abbrev_freq(text_states: str) -> dict:
     
     for state in states:
         #check for valid state names
-        if state == "":
-            continue
-        elif state in state_to_abb_dict:
+        if state in state_to_abb_dict:
             #check if state has already been added to abbreviation frequency dict
             if state_to_abb_dict[state] in state_freq_dict:
                 state_freq_dict[state_to_abb_dict[state]] += 1
@@ -250,6 +248,7 @@ def get_ssn_assignment_prefix():
     return ssn_prefix
 
 def get_ssn_prefix_count(ssn_array: list) -> dict:
+    print(get_ssn_assignment_prefix())
     #get ssn to state mapping
     prefix_to_state_dict = get_ssn_assignment_prefix()
 
@@ -260,14 +259,18 @@ def get_ssn_prefix_count(ssn_array: list) -> dict:
 
     prefix_count = {}
 
-    for ssn in ssn_array:
-      state_name = prefix_to_state_dict[int(ssn[0:3])].strip()
-      
-      #Non-state affiliated SSNs filtered out here
+    for i in range(len(ssn_array)):
+      #get prefix of each ssn
+      prefix = int(ssn_array[i][0:3])
+
+      state_name = prefix_to_state_dict[prefix].strip()
       if state_name in state_dict:
-        state_names += state_name + ","      
-    
-     
+        #prevent last state from having a comma
+        if i == (len(ssn_array) - 1):
+            state_names += state_name 
+        else:     
+            state_names += state_name + ","
+    print("State names: " + state_names)
     prefix_count = get_state_abbrev_freq(state_names)
     return prefix_count   
 
@@ -314,26 +317,28 @@ def area_code_prefixes() -> list:
 
 
 if __name__ == '__main__':
-    print(show_aggie_pride(), end='\n\n')
+    # print(show_aggie_pride(), end='\n\n')
 
-    print(area_code_prefixes())
+    # print(area_code_prefixes())
 
-    # read the data file
-    csv_data = read_csv_file('data.csv')
+    # # read the data file
+    # csv_data = read_csv_file('data.csv')
 
-    # Summarize the credit card types
-    print('Credit Card Types')
-    print(get_credit_card_type(','.join(csv_data['Credit Card'])))
-    print()
+    # # Summarize the credit card types
+    # print('Credit Card Types')
+    # print(get_credit_card_type(','.join(csv_data['Credit Card'])))
+    # print()
 
-    # Summarize the email domains
-    print('Email Domains')
-    print(email_domain_and_user_count(','.join(csv_data['Email'])))
-    print()
+    # # Summarize the email domains
+    # print('Email Domains')
+    # print(email_domain_and_user_count(','.join(csv_data['Email'])))
+    # print()
 
-    # Find frequency of SSN states in file
-    data = read_csv_file('data.csv')
-    ssn_array = data["SSN"]
-    print(get_ssn_prefix_count(ssn_array))
+    # # Find frequency of SSN states in file
+    # data = read_csv_file('data.csv')
+    # ssn_array = data["SSN"]
+    # print(get_ssn_prefix_count(ssn_array))
+    print(get_ssn_prefix_count(["587-00-2398", "691-00-3445", "751-00-3430"]))
+
 
     
