@@ -249,24 +249,7 @@ def get_ssn_assignment_prefix():
                 ssn_prefix[int(ls[0])] = ls[1]
     return ssn_prefix
 
-def get_ssn_prefix_count(file_name: str) -> dict:
-    """Returns a dictionary of how often a an SSN from each state occurs in a file"""
-    #get data from file
-    #if file is empty, read_csv_file returns {}
-
-    if file_name == '' or not os.path.isfile(file_name):
-        raise FileNotFoundError("File '" + file_name + "' is not found")
-
-    csv_data = read_csv_file(file_name)
-
-    if csv_data == {}:
-        return csv_data
-    elif csv_data.get("SSN") is None:
-        raise ValueError("File missing SSN category")
-    
-    #get ssn data
-    ssn_data = csv_data["SSN"]
-    
+def get_ssn_prefix_count(ssn_array: list) -> dict:
     #get ssn to state mapping
     prefix_to_state_dict = get_ssn_assignment_prefix()
 
@@ -275,12 +258,18 @@ def get_ssn_prefix_count(file_name: str) -> dict:
     #hold each state name to pass to get_state_abbrev_freq()
     state_names = ""
 
-    for prefix in ssn_data:
-      state_name = prefix_to_state_dict[int(prefix[0:3])].strip()
+    prefix_count = {}
+
+    for ssn in ssn_array:
+      state_name = prefix_to_state_dict[int(ssn[0:3])].strip()
+      
+      #Non-state affiliated SSNs filtered out here
       if state_name in state_dict:
         state_names += state_name + ","      
     
-    return get_state_abbrev_freq(state_names)   
+     
+    prefix_count = get_state_abbrev_freq(state_names)
+    return prefix_count   
 
 def get_credit_card_type(text: str) -> dict:
     """Returns a dict of credit card types and their counts"""
@@ -343,4 +332,8 @@ if __name__ == '__main__':
     print()
 
     # Find frequency of SSN states in file
-    print(get_ssn_prefix_count('data.csv'))
+    data = read_csv_file('data.csv')
+    ssn_array = data["SSN"]
+    print(get_ssn_prefix_count(ssn_array))
+
+    
