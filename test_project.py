@@ -200,7 +200,10 @@ class ProjectTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             get_ssn_prefix_count(invalid_nums)
     
-
-
+    def test_find_duplicate_emails(self):
+        data = './data.csv'
+        result = find_duplicate_emails(data)
+        self.assertEqual(len(result),5) 
+  
 if __name__ == '__main__':
     unittest.main()

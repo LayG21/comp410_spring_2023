@@ -2,7 +2,7 @@
 import requests
 import re
 import csv
-import os
+from csv import DictReader
 
 
 def add_two_numbers(num1, num2):
@@ -62,10 +62,11 @@ def email_domain_and_user_count(string_of_emails):
     seen_emails = set()
     if not string_of_emails:
         return dict_of_emails_and_users_count
-    email_list = re.findall(r'[\w\.-]+@[\w\.-]+', string_of_emails)
+    try:
+        email_list = re.findall(r'[\w\.-]+@[\w\.-]+', string_of_emails)
+    except ValueError as e:
+        raise ValueError(f"Invalid input string: {e}")
     for email in email_list:
-        if not re.match(r'[\w\.-]+@[\w\.-]+', email):
-            raise ValueError(f"{email} is not a valid email address")
         email_domain = email.split('@')[1]
         if email not in seen_emails:
             seen_emails.add(email)
@@ -75,6 +76,25 @@ def email_domain_and_user_count(string_of_emails):
                 dict_of_emails_and_users_count[email_domain] += 1
     
     return dict(sorted(dict_of_emails_and_users_count.items()))
+
+    
+def find_duplicate_emails(data):
+    data= './data.csv'
+    datamap = {}
+    output = []
+    output_num = 0
+    email = []
+    with open(data, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            email.append(row['Email'])
+    for emailFound in range(len(email)):
+        if email[emailFound] in datamap.keys():
+            output.append(email[emailFound])
+            output_num += 1
+        else:
+            datamap[email[emailFound]] = 1
+    return output
 
 def show_aggie_pride():
     """Show Aggie Pride"""
@@ -317,28 +337,28 @@ def area_code_prefixes() -> list:
 
 
 if __name__ == '__main__':
-    # print(show_aggie_pride(), end='\n\n')
+    print(show_aggie_pride(), end='\n\n')
 
-    # print(area_code_prefixes())
+    print(area_code_prefixes())
 
-    # # read the data file
-    # csv_data = read_csv_file('data.csv')
+    # read the data file
+    csv_data = read_csv_file('data.csv')
 
-    # # Summarize the credit card types
-    # print('Credit Card Types')
-    # print(get_credit_card_type(','.join(csv_data['Credit Card'])))
-    # print()
+    # Summarize the credit card types
+    print('Credit Card Types')
+    print(get_credit_card_type(','.join(csv_data['Credit Card'])))
+    print()
 
-    # # Summarize the email domains
-    # print('Email Domains')
-    # print(email_domain_and_user_count(','.join(csv_data['Email'])))
-    # print()
+    # Summarize the email domains
+    print('Email Domains')
+    print(email_domain_and_user_count(','.join(csv_data['Email'])))
+    print()
 
-    # # Find frequency of SSN states in file
-    # data = read_csv_file('data.csv')
-    # ssn_array = data["SSN"]
-    # print(get_ssn_prefix_count(ssn_array))
-    print(get_ssn_prefix_count(["587-00-2398", "691-00-3445", "751-00-3430"]))
+    # Find frequency of SSN states in file
+    data = read_csv_file('data.csv')
+    ssn_array = data["SSN"]
+    print(get_ssn_prefix_count(ssn_array))
+
 
 
     
