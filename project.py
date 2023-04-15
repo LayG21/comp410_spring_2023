@@ -2,7 +2,7 @@
 import requests
 import re
 import csv
-from csv import DictReader
+import pandas as pd
 
 
 def add_two_numbers(num1, num2):
@@ -134,9 +134,9 @@ def area_code_lookup(phone_nums:str) -> dict:
     return output_dict
 
 
-def get_state_abbrev() -> dict:
+def get_state_abbrev(reverse=False) -> dict:
     """Returns a dict of state abbreviations and corresponding states"""
-    return {
+    states = {
         "Alabama": "AL",
         "Alaska": "AK",
         "Arizona": "AZ",
@@ -195,6 +195,12 @@ def get_state_abbrev() -> dict:
         "United States Minor Outlying Islands": "UM",
         "U.S. Virgin Islands": "VI"
     }
+
+    # reverse the list if reverse is True
+    if reverse:
+        return {v: k for k, v in states.items()}
+    else:
+        return states
 
 
 def get_state_abbrev_freq(text_states: str) -> dict:
@@ -268,7 +274,7 @@ def get_ssn_assignment_prefix():
     return ssn_prefix
 
 def get_ssn_prefix_count(ssn_array: list) -> dict:
-    print(get_ssn_assignment_prefix())
+    # print(get_ssn_assignment_prefix())
     #get ssn to state mapping
     prefix_to_state_dict = get_ssn_assignment_prefix()
 
@@ -290,7 +296,7 @@ def get_ssn_prefix_count(ssn_array: list) -> dict:
             state_names += state_name 
         else:     
             state_names += state_name + ","
-    print("State names: " + state_names)
+    # print("State names: " + state_names)
     prefix_count = get_state_abbrev_freq(state_names)
     return prefix_count   
 
@@ -336,29 +342,56 @@ def area_code_prefixes() -> list:
     return output_list
 
 
-if __name__ == '__main__':
-    print(show_aggie_pride(), end='\n\n')
+def show_summary_data(title, data):
+    data_table = {title: data}
+    df = pd.DataFrame(data_table)
+    print(f'=== {title} ===')
+    # If there are more than 10 values show only the top-10
+    print(df.sort_values(by=title, ascending=False).head(10))
+    print('Total', end=': ')
+    print(df[title].sum())
 
-    print(area_code_prefixes())
+    # make a bar chart of the data
+    fig = df.plot.pie(y=title, figsize=(10, 5), title=title, legend=False)
+    # turn off the y-axis label
+    fig.set_ylabel('')
+    # save the chart to a file
+    fig.get_figure().savefig(f'{title}.png')
+    print(f'Chart saved to {title}.png', end='\n\n')
+
+
+if __name__ == '__main__':
+    """Compute summary statistics for the data incident"""
+    # show Aggie pride
+    print(show_aggie_pride(), end='\n\n')
 
     # read the data file
     csv_data = read_csv_file('data.csv')
 
-    # Summarize the credit card types
-    print('Credit Card Types')
-    print(get_credit_card_type(','.join(csv_data['Credit Card'])))
-    print()
+    # Show information about how many credit cards and credit card types were impacted
+    show_summary_data('Credit Card Types', get_credit_card_type(','.join(csv_data['Credit Card'])))
 
-    # Summarize the email domains
-    print('Email Domains')
-    print(email_domain_and_user_count(','.join(csv_data['Email'])))
-    print()
+    # Show information about how many email addresses and domains were impacted
+    show_summary_data('Email Domains', email_domain_and_user_count(','.join(csv_data['Email'])))
 
-    # Find frequency of SSN states in file
-    data = read_csv_file('data.csv')
-    ssn_array = data["SSN"]
-    print(get_ssn_prefix_count(ssn_array))
+    # Show SSN information
+    show_summary_data('SSN', get_ssn_prefix_count(csv_data['SSN']))
 
+    # Show area code information for us states
+    ac = area_code_lookup(','.join(csv_data['Phone']))
+    # get a list of area codes which are not US states
+    not_states = area_code_prefixes()
 
+    # Remove the area code from ac if not a us state
+    for k in not_states:
+        if k in ac:
+            del ac[k]
 
-    
+    # get state abbreviations
+    state_abbrev = get_state_abbrev(reverse=True)
+    # replace the states abbreviations with the full state names
+    for k, v in ac.items():
+        if v and v in state_abbrev:
+            ac[k] = state_abbrev[v]
+
+    show_summary_data('US Area Codes', get_state_abbrev_freq(','.join(ac.values())))
