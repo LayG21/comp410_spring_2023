@@ -344,15 +344,22 @@ def area_code_prefixes() -> list:
 
 def show_summary_data(title, data):
     data_table = {title: data}
-    df = pd.DataFrame(data_table)
+    df = pd.DataFrame(data_table).sort_values(by=title, ascending=False)
     print(f'=== {title} ===')
     # If there are more than 10 values show only the top-10
-    print(df.sort_values(by=title, ascending=False).head(10))
+    print(df.head(10))
     print('Total', end=': ')
     print(df[title].sum())
 
     # make a bar chart of the data
-    fig = df.plot.pie(y=title, figsize=(10, 5), title=title, legend=False)
+    # if the dataframe has more than 10 rows, only show the top-10
+    if len(df) > 10:
+        fig_title = f'{title} - Top-10'
+    else:
+        fig_title = title
+    fig = df.head(10).plot.pie(y=title, figsize=(10, 5), title=fig_title, legend=False)
+    # move the legend to the lower left
+    # fig.legend(loc='lower left')
     # turn off the y-axis label
     fig.set_ylabel('')
     # save the chart to a file
