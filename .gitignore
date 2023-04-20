@@ -140,3 +140,6 @@ dmypy.json
 # vs
 .vs/
 TestResults/
+
+# png charts
+*.png
