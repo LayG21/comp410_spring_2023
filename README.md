@@ -1,6 +1,6 @@
 # comp410_spring_2023
 COMP-410 Spring 2023 Semester
-Class-Wide Project
+# Class-Wide Project
 ## Requirements To Merge A Pull Request
 * [Pull requests](https://github.com/NCATComp410/comp410_spring_2023/pulls) must be linked to an [issue](https://github.com/NCATComp410/comp410_spring_2023/issues)
 * All functions must have unit-test cases, including negative test cases
